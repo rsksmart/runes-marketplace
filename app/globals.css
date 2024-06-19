@@ -57,7 +57,7 @@
 }
 @font-face {
   font-family: 'Rootstock Sans Body';
-  src: url('/assets/font/Rootstock-Sans-Body.woff') format('woff');
+  src: url('assets/font/Rootstock-Sans-Body.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }

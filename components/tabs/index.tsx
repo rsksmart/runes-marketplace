@@ -2,11 +2,20 @@ import { TabsTrigger, TabsList, Tabs, TabsContent } from '@/components/ui/tabs'
 import BuyTab from '@/components/tabs/buyTab'
 import SellTab from '@/components/tabs/sellTab'
 
-export default function TabsSection() {
+export enum Tab {
+  BUY = "buy",
+  SELL = "sell"
+}
+
+type TabsSectionProps = {
+  activeTab?: Tab
+}
+
+export default function TabsSection({ activeTab }: TabsSectionProps ) {
   return (
     <Tabs
       className="flex w-full flex-col items-center"
-      defaultValue="buy"
+      defaultValue={activeTab || Tab.BUY}
     >
       <TabsList className="grid grid-cols-2 w-fit mb-1">
         <TabsTrigger value="buy">Buy</TabsTrigger>
@@ -16,7 +25,7 @@ export default function TabsSection() {
         <TabsContent value="buy" className='w-full'>
           <BuyTab />
         </TabsContent>
-        <TabsContent value="sell" className='w-[600px] '>
+        <TabsContent value="sell" className='w-[600px]'>
           <SellTab />
         </TabsContent>
       </div>

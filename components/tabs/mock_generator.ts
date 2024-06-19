@@ -24,7 +24,7 @@ const randomImageUrl = (id: number) => `https://picsum.photos//200?random=${id}`
     },
     buyoutCurrencyValuePerToken: {
       displayValue: (Math.random() * 10).toFixed(2),
-      symbol: 'ETH'
+      symbol: 'tRBTC'
     },
     sellerAddress: randomAddress()
   });

@@ -48,8 +48,8 @@ export default function BuyTab(): JSX.Element {
             </CardHeader>
             <CardContent>
                 <div className={loadingListings ? 'block' : 'hidden'}>
-                    <Progress value={progress} />
-                    <div role="status" className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-5">
+                    <Progress value={progress} className="h-2"/>
+                    <div role="status" className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-3">
                         {[...Array(16)].map(() => (
                             <div className=""> 
                             {/* add key */}
@@ -67,7 +67,7 @@ export default function BuyTab(): JSX.Element {
                     </div>
                 </div>
                 <div className={loadingListings ? 'hidden' : 'block'}>
-                    <div className="grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4">
+                    <div className="grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4  mt-5">
                         {listings?.map((listing) => (
                             <div
                                 key={listing.id}
