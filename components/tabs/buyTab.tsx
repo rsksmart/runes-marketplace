@@ -41,7 +41,7 @@ export default function BuyTab(): JSX.Element {
     });
 
     return (
-        <Card>
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle>Buy</CardTitle>
                 <CardDescription>Buy a Rune!</CardDescription>
@@ -53,7 +53,7 @@ export default function BuyTab(): JSX.Element {
                         {[...Array(16)].map(() => (
                             <div className=""> 
                             {/* add key */}
-                                <div className="w-max-200 h-max-200">
+                                <div className="max-w-200 max-h-200">
                                     <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 items-center justify-center flex">
                                         <Image className="w-14 h-14 text-white dark:text-gray-100"></Image>
                                     </div>

@@ -12,11 +12,11 @@ export default function TabsSection() {
         <TabsTrigger value="buy">Buy</TabsTrigger>
         <TabsTrigger value="sell">Sell</TabsTrigger>
       </TabsList>
-      <div className='w-full mx-10'>
+      <div className='w-full mx-10 justify-center flex'>
         <TabsContent value="buy" className='w-full'>
           <BuyTab />
         </TabsContent>
-        <TabsContent value="sell" className='w-full'>
+        <TabsContent value="sell" className='w-[600px] '>
           <SellTab />
         </TabsContent>
       </div>
