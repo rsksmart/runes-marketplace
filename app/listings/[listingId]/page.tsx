@@ -1,5 +1,6 @@
 'use client'
 
+import { Tab } from "@/components/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -13,7 +14,7 @@ import {
     AuctionListing,
     DirectListing,
 } from "@thirdweb-dev/sdk";
-import { Copy, Image } from "lucide-react";
+import { ChevronsLeft, Copy, Image } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -136,9 +137,13 @@ const ListingPage = () => {
             defaultValue="buy"
         >
             <TabsList className="grid grid-cols-2 w-fit mb-1">
-                <TabsTrigger value="buy">Buy</TabsTrigger>
+                <TabsTrigger value="buy">
+                    <Link className="bold tracking-wide" href={`/?active=${Tab.BUY}`}>
+                        Buy
+                    </Link>
+                </TabsTrigger>
                 <TabsTrigger value="sell">
-                    <Link className="bold tracking-wide" href={`/?active=sell`}>
+                    <Link className="bold tracking-wide" href={`/?active=${Tab.SELL}`}>
                         Sell
                     </Link>
                 </TabsTrigger>
@@ -147,15 +152,25 @@ const ListingPage = () => {
                 <TabsContent value="buy" className='w-[800px]'>
                     <Card>
                         <CardHeader>
-                            <CardTitle>Buy</CardTitle>
-                            <CardDescription>Buy this Rune!</CardDescription>
+                            <div className="grid w-full grid-cols-2 gap-4">
+                                <div>
+                                    <CardTitle>Buy</CardTitle>
+                                    <CardDescription>Buy this Rune!</CardDescription>
+                                </div>
+                                <div className="flex justify-end items-center text-green-400 mr-2">
+                                    <Link className="flex items-center" href={`/?active=${Tab.BUY}`}>
+                                        <ChevronsLeft className=""></ChevronsLeft>
+                                        <span>All Runes</span>
+                                    </Link>
+                                </div>
+                            </div>
                         </CardHeader>
                         <CardContent>
                             {
                                 loadingListing ? (
                                     <div>
                                         <Progress value={progress} className="h-2" />
-                                        <div key='1' role="status" className="animate-pulse grid w-full grid-cols-2 gap-4 mt-5">
+                                        <div key='1' role="status" className="animate-pulse grid w-full grid-cols-2 gap-4 mt-3">
                                             <div className="justify-center flex w-full">
                                                 <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 items-center justify-center flex">
                                                     <Image className="w-14 h-14 text-white dark:text-gray-100"></Image>
@@ -169,7 +184,7 @@ const ListingPage = () => {
                                                 <div className="h-4 w-48 my-2 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
                                                 <div className="h-4 w-48 my-2 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
                                                 <div className="h-4 w-48 my-2 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +204,7 @@ const ListingPage = () => {
 
                                             <div className="flex flex-row items-center gap-4">
                                                 <Label className="text-bold text-1xl w-24">Seller</Label>
-                                                <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white">
+                                                <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
                                                     <span>
                                                         {styleAddress(listing!.sellerAddress)}
                                                     </span>

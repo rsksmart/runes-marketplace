@@ -51,7 +51,7 @@ export default function BuyTab(): JSX.Element {
                     <div>
                         <Progress value={progress} className="h-2" />
                         <div role="status" className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-3">
-                            {[...Array(16)].map((e, i) => (
+                            {[...Array(10)].map((e, i) => (
                                 <div key={i}>
                                     <div className="max-w-200 max-h-200">
                                         <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 items-center justify-center flex">
