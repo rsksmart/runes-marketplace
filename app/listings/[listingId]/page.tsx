@@ -157,7 +157,7 @@ const ListingPage = () => {
                                     <CardTitle>Buy</CardTitle>
                                     <CardDescription>Buy this Rune!</CardDescription>
                                 </div>
-                                <div className="flex justify-end items-center text-green-400 mr-2">
+                                <div className="flex justify-end items-center hover:text-pink-400 mr-2">
                                     <Link className="flex items-center" href={`/?active=${Tab.BUY}`}>
                                         <ChevronsLeft className=""></ChevronsLeft>
                                         <span>All Runes</span>
