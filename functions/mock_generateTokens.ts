@@ -1,4 +1,4 @@
-import { NFT } from "@/constants/NFT";
+import { Token } from "@/constants/Token";
 
 // Helper function to generate a random string of a given length
 const randomString = (length: number) => {
@@ -16,14 +16,14 @@ const randomImageUrl = (id: number) =>
 // Helper function to generate a random Ethereum address
 const randomAddress = () => `0x${randomString(40)}`;
 
-// Function to generate a mock NFT
-const generateMockNFT = (id: number): NFT => ({
+// Function to generate a mock Token
+const generateMockToken = (id: number): Token => ({
   id,
   asset: {
-    name: `NFT #${id}`,
+    name: `Token #${id}`,
     id: `asset_${id}`,
     image: randomImageUrl(id),
-    description: `Description of NFT #${id}`,
+    description: `Description of Token #${id}`,
   },
   buyoutCurrencyValuePerToken: {
     displayValue: (Math.random() * 10).toFixed(2),
@@ -32,13 +32,12 @@ const generateMockNFT = (id: number): NFT => ({
   sellerAddress: randomAddress(),
 });
 
-// Generate a map of 9 NFT elements
-const generateNFTs = (count: number): Array<NFT> => {
-  const nftMap = new Array<NFT>();
+const generateTokens = (count: number): Array<Token> => {
+  const tokenMap = new Array<Token>();
   for (let i = 1; i <= count; i++) {
-    nftMap.push(generateMockNFT(i));
+    tokenMap.push(generateMockToken(i));
   }
-  return nftMap;
+  return tokenMap;
 };
 
-export default generateNFTs;
+export default generateTokens;

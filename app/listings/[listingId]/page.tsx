@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { formatAddress } from "@/lib/utils";
 import {
   MediaRenderer,
   useBuyDirectListing,
@@ -37,12 +38,6 @@ const ListingPage = () => {
   const signer = useSigner();
 
   const [buyingInProgress, setBuyingInProgress] = useState(false);
-
-  function styleAddress(_address: string) {
-    return (
-      _address.substring(0, 4) + "..." + _address.substring(_address.length - 4)
-    );
-  }
 
   return (
     <Tabs className="flex w-full flex-col items-center" defaultValue="buy">
@@ -108,7 +103,6 @@ const ListingPage = () => {
                 >
                   <div className="justify-center flex w-full">
                     {listing!.asset.image ? (
-                      // <img className='rounded-lg mb-2' src={listing.asset.image}></img>
                       <MediaRenderer
                         className="rounded-lg mb-2"
                         width="200px"
@@ -116,7 +110,7 @@ const ListingPage = () => {
                         src={listing!.asset.image}
                       />
                     ) : (
-                      <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 items-center justify-center flex">
+                      <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg items-center justify-center flex">
                         <Image className="w-14 h-14 text-white dark:text-gray-100"></Image>
                       </div>
                     )}
@@ -131,7 +125,7 @@ const ListingPage = () => {
                     <div className="flex flex-row items-center gap-4">
                       <Label className="text-bold text-1xl w-32">Seller</Label>
                       <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
-                        <span>{styleAddress(listing!.creatorAddress)}</span>
+                        <span>{formatAddress(listing!.creatorAddress)}</span>
                         <Copy className="w-4"></Copy>
                       </div>
                     </div>
@@ -141,7 +135,7 @@ const ListingPage = () => {
                       </Label>
                       <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
                         <span>
-                          {styleAddress(listing!.assetContractAddress)}
+                          {formatAddress(listing!.assetContractAddress)}
                         </span>
                         <Copy className="w-4"></Copy>
                       </div>

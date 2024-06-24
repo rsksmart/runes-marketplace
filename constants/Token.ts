@@ -1,4 +1,4 @@
-export type NFT = {
+export type Token = {
   id: number;
   asset: {
     name: string;
