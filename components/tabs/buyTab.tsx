@@ -1,44 +1,18 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import generateNFTs from "./mock_generator"
-import { MediaRenderer } from "@thirdweb-dev/react";
+import { MediaRenderer, useContract, useDirectListings } from "@thirdweb-dev/react";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Image, CircleHelp } from "lucide-react";
-import { NFT } from "@/constants/NFT";
-import { Progress } from "@/components/ui/progress";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function BuyTab(): JSX.Element {
-    // const { contract } = useContract('0x5849804F2F05e4097702D562695C238C32A76187', 'marketplace')
-    // const { data: listings, isLoading: loadingListings } = useActiveListings(contract);
+
+export default function BuyTab() {
+    const { contract } = useContract("0x268fdeF588d5e4492774578e076c32Dfe5FdFFD8", "marketplace-v3")
+    const { data: listings, isLoading: loadingListings } = useDirectListings(contract);
+
     const router = useRouter();
-
-    var listings = new Array<NFT>();
-    listings = generateNFTs(19);
-
-    const [progress, setProgress] = useState(0)
-    const [loadingListings, setLoadingListings] = useState(true)
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setProgress(prevProgress => {
-                if (prevProgress >= 100) {
-                    clearInterval(interval);
-                    setLoadingListings(false);
-                    return 100;
-                }
-                return prevProgress + 10; // Increase progress by 10% every second
-            });
-
-        }, 200); // Update every
-
-        return () => {
-            clearInterval(interval);
-        };
-    });
 
     return (
         <Card className="w-full">
@@ -49,7 +23,6 @@ export default function BuyTab(): JSX.Element {
             <CardContent>{
                 loadingListings ? (
                     <div>
-                        <Progress value={progress} className="h-2" />
                         <div role="status" className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-3">
                             {[...Array(10)].map((e, i) => (
                                 <div key={i}>
@@ -74,20 +47,28 @@ export default function BuyTab(): JSX.Element {
                                 className="hover:text-purple-400 hover:text-bold px-4"
                                 onClick={() => router.push(`/listings/${listing.id}`)}
                             >
-                                <Link href={`/listings/${listing.id}`}>
-                                    <img className='rounded-lg mb-2' src={listing.asset.image}></img>
-                                </Link>
-                                {/* Use with the data provided by the contract 
-                            <MediaRenderer width="200" height="200" src={listing.asset.image} /> */}
-
+                                <div className="w-max-[200px] max-h-[200px]" >
+                                    <Link className="w-[200px]" href={`/listings/${listing.id}`}>
+                                        {listing.asset.image ? (
+                                            <div className="w-[200px] h-[200px] rounded-lg my-2">
+                                                <MediaRenderer className='rounded-lg' width="200px" height='200px' src={listing.asset.image} />
+                                            </div>
+                                            // <img className='rounded-lg mb-2' src={listing.asset.image}></img>
+                                        ) : (
+                                            <div className="w-[200px] h-[200px] my-2 bg-border rounded-lg items-center justify-center flex">
+                                                <Image className="w-14 h-14 text-gray-200"></Image>
+                                            </div>
+                                        )}
+                                    </Link>
+                                </div>
                                 <div className="flex flex-col items-start">
                                     <Link className="bold tracking-wide" href={`/listing/${listing.id}`}>
                                         {listing.asset.name}
                                     </Link>
                                     <div className="flex flex-row items-center">
                                         <p >
-                                            {listing.buyoutCurrencyValuePerToken.displayValue}{" "}
-                                            {listing.buyoutCurrencyValuePerToken.symbol}
+                                            {listing.currencyValuePerToken.displayValue}{" "}
+                                            {listing.currencyValuePerToken.symbol}
                                         </p>
                                         <Tooltip>
                                             <TooltipTrigger>
@@ -103,7 +84,8 @@ export default function BuyTab(): JSX.Element {
                                 </div>
                             </div>
                         ))}
-                    </div>)}
+                    </div>
+                )}
             </CardContent>
         </Card>
     )

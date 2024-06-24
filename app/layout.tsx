@@ -4,12 +4,13 @@ import './globals.css'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { ConnectWallet, ThirdwebProvider } from '@thirdweb-dev/react'
-import { RootstockTestnet } from "@thirdweb-dev/chains";
+import { BaseSepoliaTestnet } from "@thirdweb-dev/chains";
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import Footer from '@/components/footer/Footer'
 import Navbar from '@/components/navbar/Navbar'
 
-const activeChain = RootstockTestnet;
+// const activeChain = RootstockTestnet;
+const activeChain = BaseSepoliaTestnet;
 
 export default function RootLayout({
   children,
@@ -18,8 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <ThirdwebProvider
-      clientId={process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID}
-      activeChain={activeChain}
+    activeChain={activeChain}
+    clientId="8dd1b36843baa02015f2694d6f44ed56"
     >
       <html lang="en">
         <body className='h-screen'>

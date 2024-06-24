@@ -17,7 +17,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@thirdweb-dev/react": "^4.9.2",
+    "@thirdweb-dev/react": "^4.9.4",
     "@thirdweb-dev/sdk": "^4.0.97",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
@@ -30,6 +30,7 @@
     "react-toastify": "^10.0.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "thirdweb": "^5.29.6",
     "zod": "^3.23.8"
   },
   "devDependencies": {
