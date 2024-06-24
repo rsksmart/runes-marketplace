@@ -1,6 +1,6 @@
 "use client";
 
-import "./globals.css";
+import "@/app/output.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ConnectWallet, ThirdwebProvider } from "@thirdweb-dev/react";
