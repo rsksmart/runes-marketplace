@@ -14,5 +14,5 @@ export function Discord({ className }: { className?: string }): JSX.Element {
         fill="white"
       ></path>
     </svg>
-  )
+  );
 }

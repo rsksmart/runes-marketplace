@@ -1,4 +1,4 @@
-import { Discord, Github, Twitter } from '@/components/icons'
+import { Discord, Github, Twitter } from "@/components/icons";
 
 export default function Footer(): JSX.Element {
   return (
@@ -70,5 +70,5 @@ export default function Footer(): JSX.Element {
         </a>
       </ul>
     </footer>
-  )
+  );
 }

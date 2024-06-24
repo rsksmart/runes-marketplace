@@ -13,5 +13,5 @@ export function Twitter({ className }: { className?: string }): JSX.Element {
         fill="white"
       ></path>
     </svg>
-  )
+  );
 }

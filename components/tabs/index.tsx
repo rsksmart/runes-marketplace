@@ -1,17 +1,17 @@
-import { TabsTrigger, TabsList, Tabs, TabsContent } from '@/components/ui/tabs'
-import BuyTab from '@/components/tabs/buyTab'
-import SellTab from '@/components/tabs/sellTab'
+import { TabsTrigger, TabsList, Tabs, TabsContent } from "@/components/ui/tabs";
+import BuyTab from "@/components/tabs/buyTab";
+import SellTab from "@/components/tabs/sellTab";
 
 export enum Tab {
   BUY = "buy",
-  SELL = "sell"
+  SELL = "sell",
 }
 
 type TabsSectionProps = {
-  activeTab?: Tab
-}
+  activeTab?: Tab;
+};
 
-export default function TabsSection({ activeTab }: TabsSectionProps ) {
+export default function TabsSection({ activeTab }: TabsSectionProps) {
   return (
     <Tabs
       className="flex w-full flex-col items-center"
@@ -21,14 +21,14 @@ export default function TabsSection({ activeTab }: TabsSectionProps ) {
         <TabsTrigger value="buy">Buy</TabsTrigger>
         <TabsTrigger value="sell">Sell</TabsTrigger>
       </TabsList>
-      <div className='w-full mx-10 justify-center flex'>
-        <TabsContent value="buy" className='w-full'>
+      <div className="w-full mx-10 justify-center flex">
+        <TabsContent value="buy" className="w-full">
           <BuyTab />
         </TabsContent>
-        <TabsContent value="sell" className='w-[600px]'>
+        <TabsContent value="sell" className="w-[600px]">
           <SellTab />
         </TabsContent>
       </div>
     </Tabs>
-  )
+  );
 }
