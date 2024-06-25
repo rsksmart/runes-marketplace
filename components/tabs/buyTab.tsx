@@ -41,19 +41,18 @@ export default function BuyTab() {
         {loadingListings ? (
           <div>
             <div
-              role="status"
               className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-3"
             >
               {[...Array(10)].map((e, i) => (
                 <div key={i}>
                   <div className="max-w-200 max-h-200">
-                    <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 items-center justify-center flex">
-                      <Image className="w-14 h-14 text-white dark:text-gray-100"></Image>
+                    <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg items-center justify-center flex">
+                      <Image className="w-14 h-14 text-white"></Image>
                     </div>
                   </div>
                   <div className="">
-                    <div className="h-[10px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 max-w-[150px]"></div>
-                    <div className="h-[10px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 max-w-[80px]"></div>
+                    <div className="h-[10px] my-2 bg-gray-200 rounded-lg  max-w-[150px]"></div>
+                    <div className="h-[10px] my-2 bg-gray-200 rounded-lg  max-w-[80px]"></div>
                   </div>
                 </div>
               ))}
