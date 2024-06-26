@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatAddress } from "@/lib/utils";
+import { copyToClipboard, formatAddress } from "@/lib/utils";
 import {
     MediaRenderer,
     useBuyDirectListing,
@@ -40,6 +40,12 @@ const ListingPage = () => {
     const signer = useSigner();
 
     const [buyingInProgress, setBuyingInProgress] = useState(false);
+
+
+  const [copied, setCopied] = useState(false);
+
+    const creatorAddress: string | undefined = listing?.creatorAddress;
+    const assetContractAddress: string | undefined = listing?.assetContractAddress;
 
     return (
         <Tabs className="flex w-full flex-col items-center" defaultValue="buy">
@@ -126,8 +132,11 @@ const ListingPage = () => {
 
                                         <div className="flex flex-row items-center gap-4">
                                             <Label className="text-bold text-1xl w-32">Seller</Label>
-                                            <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
-                                                <span>{formatAddress(listing!.creatorAddress)}</span>
+                                            <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer"
+                                                onClick={()=> {
+                                                    copyToClipboard(creatorAddress!)
+                                            }}>
+                                                {formatAddress(creatorAddress!)}
                                                 <Copy className="w-4"></Copy>
                                             </div>
                                         </div>
@@ -135,10 +144,11 @@ const ListingPage = () => {
                                             <Label className="text-bold text-1xl w-32">
                                                 Rune Address
                                             </Label>
-                                            <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
-                                                <span>
-                                                    {formatAddress(listing!.assetContractAddress)}
-                                                </span>
+                                            <div className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer"
+                                                onClick={()=> {
+                                                        copyToClipboard(assetContractAddress!)
+                                            }}>
+                                                {formatAddress(assetContractAddress!)}
                                                 <Copy className="w-4"></Copy>
                                             </div>
                                         </div>
@@ -174,7 +184,6 @@ const ListingPage = () => {
                                     onSubmit={() => {
                                         setBuyingInProgress(true);
                                     }}
-                                    onError={(error) => alert("Something went wrong!")}
                                 >
                                     Buy Now
                                 </Web3Button>
