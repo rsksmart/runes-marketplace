@@ -60,57 +60,62 @@ export default function BuyTab() {
           </div>
         ) : (
           <div className="grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4  mt-5">
-            {listings?.filter(listing =>  listing.status === Status.Active).map((listing) => (
-              <div
-                key={listing.id}
-                className="hover:text-purple-400 hover:text-bold px-4"
-                onClick={() => router.push(`/listings/${listing.id}`)}
-              >
-                <div className="w-max-[200px] max-h-[200px]">
-                  <Link className="w-[200px]" href={`/listings/${listing.id}`}>
-                    {listing.asset.image ? (
-                      <div className="w-[200px] h-[200px] rounded-lg my-2">
-                        <MediaRenderer
-                          className="rounded-lg"
-                          width="200px"
-                          height="200px"
-                          src={listing.asset.image}
-                        />
-                      </div>
-                    ) : (
-                      // <img className='rounded-lg mb-2' src={listing.asset.image}></img>
-                      <div className="w-[200px] h-[200px] my-2 bg-border rounded-lg items-center justify-center flex">
-                        <Image className="w-14 h-14 text-gray-200"></Image>
-                      </div>
-                    )}
-                  </Link>
-                </div>
-                <div className="flex flex-col items-start">
-                  <Link
-                    className="bold tracking-wide"
-                    href={`/listing/${listing.id}`}
-                  >
-                    {listing.asset.name}
-                  </Link>
-                  <div className="flex flex-row items-center">
-                    <p>
-                      {listing.currencyValuePerToken.displayValue}{" "}
-                      {listing.currencyValuePerToken.symbol}
-                    </p>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <CircleHelp className="w-6 h-6 pl-2" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="max-w-[200px]">
-                          Gas costs are not included
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
+            {listings
+              ?.filter((listing) => listing.status === Status.Active)
+              .map((listing) => (
+                <div
+                  key={listing.id}
+                  className="hover:text-purple-400 hover:text-bold px-4"
+                  onClick={() => router.push(`/listings/${listing.id}`)}
+                >
+                  <div className="w-max-[200px] max-h-[200px]">
+                    <Link
+                      className="w-[200px]"
+                      href={`/listings/${listing.id}`}
+                    >
+                      {listing.asset.image ? (
+                        <div className="w-[200px] h-[200px] rounded-lg my-2">
+                          <MediaRenderer
+                            className="rounded-lg"
+                            width="200px"
+                            height="200px"
+                            src={listing.asset.image}
+                          />
+                        </div>
+                      ) : (
+                        // <img className='rounded-lg mb-2' src={listing.asset.image}></img>
+                        <div className="w-[200px] h-[200px] my-2 bg-border rounded-lg items-center justify-center flex">
+                          <Image className="w-14 h-14 text-gray-200"></Image>
+                        </div>
+                      )}
+                    </Link>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <Link
+                      className="bold tracking-wide"
+                      href={`/listing/${listing.id}`}
+                    >
+                      {listing.asset.name}
+                    </Link>
+                    <div className="flex flex-row items-center">
+                      <p>
+                        {listing.currencyValuePerToken.displayValue}{" "}
+                        {listing.currencyValuePerToken.symbol}
+                      </p>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <CircleHelp className="w-6 h-6 pl-2" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="max-w-[200px]">
+                            Gas costs are not included
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         )}
       </CardContent>

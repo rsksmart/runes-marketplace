@@ -20,11 +20,16 @@ import {
   useSigner,
   Web3Button,
 } from "@thirdweb-dev/react";
-import { ChevronsLeft, Copy, Image } from "lucide-react";
+import { Check, ChevronsLeft, Copy, Image } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Config } from "@/app/config";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ListingPage = () => {
   const contractAddress = Config.marketplaceContractAddress;
@@ -41,11 +46,30 @@ const ListingPage = () => {
 
   const [buyingInProgress, setBuyingInProgress] = useState(false);
 
-  const [copied, setCopied] = useState(false);
+  const [contractAddressCopied, setContractAddressCopied] = useState(false);
+  const [creatorAddressCopied, setCreatorAddressCopied] = useState(false);
 
   const creatorAddress: string | undefined = listing?.creatorAddress;
   const assetContractAddress: string | undefined =
     listing?.assetContractAddress;
+
+  useEffect(() => {
+    if (contractAddressCopied) {
+      const timer = setTimeout(() => {
+        setContractAddressCopied(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [contractAddressCopied]);
+
+  useEffect(() => {
+    if (creatorAddressCopied) {
+      const timer = setTimeout(() => {
+        setCreatorAddressCopied(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [creatorAddressCopied]);
 
   return (
     <Tabs className="flex w-full flex-col items-center" defaultValue="buy">
@@ -101,6 +125,7 @@ const ListingPage = () => {
                       <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
                       <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
                       <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
+                      <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
                     </div>
                   </div>
                 </div>
@@ -132,28 +157,70 @@ const ListingPage = () => {
 
                     <div className="flex flex-row items-center gap-4">
                       <Label className="text-bold text-1xl w-32">Seller</Label>
-                      <div
-                        className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer"
-                        onClick={() => {
-                          copyToClipboard(creatorAddress!);
-                        }}
-                      >
+                      <div className="flex flex-row items-center gap-2">
                         {formatAddress(creatorAddress!)}
-                        <Copy className="w-4"></Copy>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            {creatorAddressCopied ? (
+                              <Check
+                                onClick={() => {
+                                  copyToClipboard(assetContractAddress!);
+                                }}
+                                className="w-4 text-green-500 "
+                              ></Check>
+                            ) : (
+                              <Copy
+                                onClick={() => {
+                                  copyToClipboard(creatorAddress!);
+                                  setCreatorAddressCopied(true);
+                                }}
+                                className="w-4 text-gray-400 hover:text-white cursor-pointer"
+                              ></Copy>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="max-w-[200px]">
+                              {creatorAddressCopied
+                                ? "Address copied!"
+                                : "Copy Address"}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
                       <Label className="text-bold text-1xl w-32">
                         Rune Address
                       </Label>
-                      <div
-                        className="flex flex-row items-center gap-2 text-gray-400 hover:text-white cursor-pointer"
-                        onClick={() => {
-                          copyToClipboard(assetContractAddress!);
-                        }}
-                      >
+                      <div className="flex flex-row items-center gap-2">
                         {formatAddress(assetContractAddress!)}
-                        <Copy className="w-4"></Copy>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            {contractAddressCopied ? (
+                              <Check
+                                onClick={() => {
+                                  copyToClipboard(assetContractAddress!);
+                                }}
+                                className="w-4 text-green-500 "
+                              ></Check>
+                            ) : (
+                              <Copy
+                                onClick={() => {
+                                  copyToClipboard(assetContractAddress!);
+                                  setContractAddressCopied(true);
+                                }}
+                                className="w-4 text-gray-400 hover:text-white cursor-pointer"
+                              ></Copy>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="max-w-[200px]">
+                              {contractAddressCopied
+                                ? "Address copied!"
+                                : "Copy Address"}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
