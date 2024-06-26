@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Image, CircleHelp } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Config } from '@/app/config';
+import { Config } from "@/app/config";
 
 export default function BuyTab() {
   const { contract } = useContract(
@@ -41,9 +41,7 @@ export default function BuyTab() {
       <CardContent>
         {loadingListings ? (
           <div>
-            <div
-              className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-3"
-            >
+            <div className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-3">
               {[...Array(10)].map((e, i) => (
                 <div key={i}>
                   <div className="max-w-200 max-h-200">

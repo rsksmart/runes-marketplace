@@ -10,5 +10,5 @@ export function formatAddress(address: string) {
 }
 
 export async function copyToClipboard(string: string) {
-    await navigator.clipboard.writeText(string);
+  await navigator.clipboard.writeText(string);
 }

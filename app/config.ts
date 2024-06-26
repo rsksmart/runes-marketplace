@@ -15,6 +15,6 @@ if (!marketplaceContractAddress) {
 }
 
 export const Config = {
-    clientId: clientId,
-    marketplaceContractAddress: marketplaceContractAddress
-}
+  clientId: clientId,
+  marketplaceContractAddress: marketplaceContractAddress,
+};

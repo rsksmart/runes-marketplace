@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { CircleHelp } from "lucide-react";
 import { useState } from "react";
-import { Config } from '@/app/config';
+import { Config } from "@/app/config";
 
 export default function SellTab() {
   const contractAddress = Config.marketplaceContractAddress;
