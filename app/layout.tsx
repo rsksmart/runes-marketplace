@@ -8,6 +8,7 @@ import { BaseSepoliaTestnet } from "@thirdweb-dev/chains";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
+import { Config } from '@/app/config';
 
 // const activeChain = RootstockTestnet;
 const activeChain = BaseSepoliaTestnet;
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <ThirdwebProvider
       activeChain={activeChain}
-      clientId="8dd1b36843baa02015f2694d6f44ed56"
+      clientId={Config.clientId}
     >
       <html lang="en">
         <body className="h-screen">

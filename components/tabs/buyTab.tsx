@@ -20,10 +20,11 @@ import {
 } from "@/components/ui/tooltip";
 import { Image, CircleHelp } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Config } from '@/app/config';
 
 export default function BuyTab() {
   const { contract } = useContract(
-    "0x268fdeF588d5e4492774578e076c32Dfe5FdFFD8",
+    Config.marketplaceContractAddress,
     "marketplace-v3",
   );
   const { data: listings, isLoading: loadingListings } =
