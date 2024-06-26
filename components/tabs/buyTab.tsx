@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import {
   MediaRenderer,
+  Status,
   useContract,
   useDirectListings,
 } from "@thirdweb-dev/react";
@@ -59,7 +60,7 @@ export default function BuyTab() {
           </div>
         ) : (
           <div className="grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4  mt-5">
-            {listings?.map((listing) => (
+            {listings?.filter(listing =>  listing.status === Status.Active).map((listing) => (
               <div
                 key={listing.id}
                 className="hover:text-purple-400 hover:text-bold px-4"
