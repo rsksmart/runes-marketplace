@@ -28,7 +28,7 @@ import { Config } from '@/app/config';
 
 const ListingPage = () => {
     const contractAddress = Config.marketplaceContractAddress;
-    
+
     const { contract } = useContract(contractAddress, "marketplace-v3");
 
     const { listingId } = useParams() as unknown as { listingId: number };
@@ -84,17 +84,17 @@ const ListingPage = () => {
                                         className="animate-pulse grid w-full grid-cols-2 gap-4 mt-3"
                                     >
                                         <div className="justify-center flex w-full">
-                                            <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg dark:bg-gray-700 items-center justify-center flex">
-                                                <Image className="w-14 h-14 text-white dark:text-gray-100"></Image>
+                                            <div className="w-[200px] h-[200px] my-2 bg-border  rounded-lg items-center justify-center flex">
+                                                <Image className="w-14 h-14 text-gray-200 "></Image>
                                             </div>
                                         </div>
                                         <div className="">
                                             <div className="text-4xl mb-10 font-bold text-black ">
-                                                <div className="h-14 w-60 bg-gray-200 dark:bg-gray-700"></div>
+                                                <div className="h-14 w-60 bg-border  "></div>
                                             </div>
-                                            <div className="h-4 w-48 my-2 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
-                                            <div className="h-4 w-48 my-2 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
-                                            <div className="h-4 w-48 my-2 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
+                                            <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
+                                            <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
+                                            <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
                                         </div>
                                     </div>
                                 </div>
@@ -112,8 +112,8 @@ const ListingPage = () => {
                                                 src={listing!.asset.image}
                                             />
                                         ) : (
-                                            <div className="w-[200px] h-[200px] my-2 bg-gray-200 rounded-lg items-center justify-center flex">
-                                                <Image className="w-14 h-14 text-white dark:text-gray-100"></Image>
+                                            <div className="w-[200px] h-[200px] my-2 bg-border  rounded-lg items-center justify-center flex">
+                                                <Image className="w-14 h-14 text-gray-200 "></Image>
                                             </div>
                                         )}
                                     </div>
