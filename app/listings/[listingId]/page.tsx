@@ -22,7 +22,7 @@ import {
 } from "@thirdweb-dev/react";
 import { Check, ChevronsLeft, Copy, Image } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Config } from "@/app/config";
 import {
@@ -44,6 +44,7 @@ const ListingPage = () => {
   );
   const { mutateAsync: buyDirectListing } = useBuyDirectListing(contract);
   const signer = useSigner();
+  const router = useRouter();
 
   const [buyingInProgress, setBuyingInProgress] = useState(false);
 
@@ -242,34 +243,22 @@ const ListingPage = () => {
               )}
             </CardContent>
             <CardFooter className="px-0 relative justify-end mb-6 mr-4">
-              {!buyingInProgress ? (
                 <Web3Button
                   connectWallet={{...connectWalletProps}}
                   contractAddress={contractAddress}
                   action={async () => {
                     const buyerAddress = await signer?.getAddress();
-                    buyDirectListing({
+                    await buyDirectListing({
                       listingId: listingId.toString(), // ID of the listing to buy
                       quantity: "1",
                       buyer: buyerAddress!, // Wallet to buy for
-                    });
-                  }}
-                  onSubmit={() => {
-                    setBuyingInProgress(true);
+                    }).finally(
+                        () => { router.push(`/`) }
+                    )
                   }}
                 >
                   Buy Now
                 </Web3Button>
-              ) : (
-                <Web3Button
-                  contractAddress={contractAddress}
-                  action={async () => {}}
-                  isDisabled={true}
-                  style={{ background: "#444" }}
-                >
-                  Buy Now
-                </Web3Button>
-              )}
             </CardFooter>
           </Card>
         </TabsContent>

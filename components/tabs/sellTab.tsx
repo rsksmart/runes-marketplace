@@ -23,13 +23,15 @@ import { CircleHelp } from "lucide-react";
 import { useState } from "react";
 import { Config } from "@/app/config";
 import { connectWalletProps } from "@/constants";
+import { Tab } from ".";
 
-export default function SellTab() {
+
+export default function SellTab({setActiveTab}: any ) {
   const contractAddress = Config.marketplaceContractAddress;
   const { contract } = useContract(contractAddress, "marketplace-v3");
 
   const { mutateAsync: createDirectListing } = useCreateDirectListing(contract);
-
+  
   const [formData, setFormData] = useState({
     token_id: "",
     address: "",
@@ -43,8 +45,6 @@ export default function SellTab() {
       [name]: value,
     });
   };
-
-  const [loading, setLoading] = useState(false);
 
   return (
     <Card>
@@ -133,8 +133,8 @@ export default function SellTab() {
         <Web3Button
           {...connectWalletProps}
           contractAddress={contractAddress}
-          action={() =>
-            createDirectListing({
+          action={async () =>
+            await createDirectListing({
               assetContractAddress: formData.address,
               tokenId: formData.token_id,
               pricePerToken: formData.price,
@@ -144,11 +144,10 @@ export default function SellTab() {
               endTimestamp: new Date(
                 new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
               ),
-            })
+            }).finally( () => 
+                setActiveTab(Tab.BUY)
+            )
           }
-          onSubmit={() => {
-            setLoading(true);
-          }}
         >
           List
         </Web3Button>
