@@ -30,6 +30,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { connectWalletProps } from "@/constants";
 
 const ListingPage = () => {
   const contractAddress = Config.marketplaceContractAddress;
@@ -243,6 +244,7 @@ const ListingPage = () => {
             <CardFooter className="px-0 relative justify-end mb-6 mr-4">
               {!buyingInProgress ? (
                 <Web3Button
+                  connectWallet={{...connectWalletProps}}
                   contractAddress={contractAddress}
                   action={async () => {
                     const buyerAddress = await signer?.getAddress();

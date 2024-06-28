@@ -22,6 +22,7 @@ import {
 import { CircleHelp } from "lucide-react";
 import { useState } from "react";
 import { Config } from "@/app/config";
+import { connectWalletProps } from "@/constants";
 
 export default function SellTab() {
   const contractAddress = Config.marketplaceContractAddress;
@@ -130,6 +131,7 @@ export default function SellTab() {
       </CardContent>
       <CardFooter className="px-0 relative z-0 justify-end mb-4 mr-4">
         <Web3Button
+          {...connectWalletProps}
           contractAddress={contractAddress}
           action={() =>
             createDirectListing({
