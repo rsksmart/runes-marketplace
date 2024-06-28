@@ -1,4 +1,19 @@
-import { Token } from "@/constants/Token";
+
+export type Token = {
+  id: number;
+  asset: {
+    name: string;
+    id: string;
+    description: string;
+    image: string;
+  };
+  buyoutCurrencyValuePerToken: {
+    displayValue: string;
+    symbol: string;
+  };
+  sellerAddress: string;
+};
+
 
 // Helper function to generate a random string of a given length
 const randomString = (length: number) => {
@@ -32,12 +47,10 @@ const generateMockToken = (id: number): Token => ({
   sellerAddress: randomAddress(),
 });
 
-const generateTokens = (count: number): Array<Token> => {
+export const generateTokens = (count: number): Array<Token> => {
   const tokenMap = new Array<Token>();
   for (let i = 1; i <= count; i++) {
     tokenMap.push(generateMockToken(i));
   }
   return tokenMap;
 };
-
-export default generateTokens;
