@@ -3,16 +3,15 @@
 import "@/app/globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ConnectWallet, metamaskWallet, trustWallet, walletConnect, ThirdwebProvider } from "@thirdweb-dev/react";
-import { BaseSepoliaTestnet } from "@thirdweb-dev/chains";
+import { ConnectWallet, metamaskWallet, trustWallet, walletConnect, ThirdwebProvider, embeddedWallet } from "@thirdweb-dev/react";
+import { RootstockTestnet } from "@thirdweb-dev/chains";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import { Config } from "@/app/config";
 import { connectWalletProps } from "@/constants/index"
 
-// const chain = RootstockTestnet;
-const chain = BaseSepoliaTestnet;
+
 
 export default function RootLayout({
   children,
@@ -21,12 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <ThirdwebProvider
-      activeChain={chain}
-      supportedChains={[chain]}
+      activeChain={RootstockTestnet}
       supportedWallets={[
         metamaskWallet(),
         trustWallet(),
         walletConnect(),
+        embeddedWallet(),
+
       ]}
       clientId={Config.clientId}
     >
