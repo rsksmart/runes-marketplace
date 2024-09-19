@@ -77,18 +77,18 @@ const ListingPage = () => {
     <Tabs className="flex w-full flex-col items-center" defaultValue="buy">
       <TabsList className="grid grid-cols-2 w-fit mb-1">
         <TabsTrigger value="buy">
-          <Link className="bold tracking-wide" href={`/?active=${Tab.BUY}`}>
+          <Link className="font-bold tracking-wide" href={`/?active=${Tab.BUY}`}>
             Buy
           </Link>
         </TabsTrigger>
         <TabsTrigger value="sell">
-          <Link className="bold tracking-wide" href={`/?active=${Tab.SELL}`}>
+          <Link className="font-bold tracking-wide" href={`/?active=${Tab.SELL}`}>
             Sell
           </Link>
         </TabsTrigger>
       </TabsList>
-      <div className="w-full mx-10 justify-center flex">
-        <TabsContent value="buy" className="w-[800px]">
+      <div className="w-full mx-4 md:mx-10 justify-center flex">
+        <TabsContent value="buy" className="w-full max-w-[900px]">
           <Card>
             <CardHeader>
               <div className="grid w-full grid-cols-2 gap-4">
@@ -101,7 +101,7 @@ const ListingPage = () => {
                     className="flex items-center"
                     href={`/?active=${Tab.BUY}`}
                   >
-                    <ChevronsLeft className=""></ChevronsLeft>
+                    <ChevronsLeft className="mr-1" />
                     <span>All Runes</span>
                   </Link>
                 </div>
@@ -109,67 +109,54 @@ const ListingPage = () => {
             </CardHeader>
             <CardContent>
               {loadingListing ? (
-                <div>
-                  <div
-                    key="1"
-                    role="status"
-                    className="animate-pulse grid w-full grid-cols-2 gap-4 mt-3"
-                  >
-                    <div className="justify-center flex w-full">
-                      <div className="w-[200px] h-[200px] my-2 bg-border  rounded-lg items-center justify-center flex">
-                        <Image className="w-14 h-14 text-gray-200 "></Image>
-                      </div>
+                <div className="animate-pulse grid w-full grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                  <div className="flex justify-center w-full">
+                    <div className="w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-border rounded-lg flex items-center justify-center">
+                      <Image className="w-14 h-14 text-gray-200" />
                     </div>
-                    <div className="">
-                      <div className="text-4xl mb-10 font-bold text-black ">
-                        <div className="h-14 w-60 bg-border  "></div>
-                      </div>
-                      <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
-                      <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
-                      <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
-                      <div className="h-4 w-48 my-2 bg-border  rounded-lg "></div>
+                  </div>
+                  <div className="">
+                    <div className="text-2xl md:text-4xl font-bold mb-10 text-black">
+                      <div className="h-14 w-60 bg-border rounded-lg"></div>
                     </div>
+                    {[...Array(4)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-4 w-48 my-2 bg-border rounded-lg"
+                      ></div>
+                    ))}
                   </div>
                 </div>
               ) : (
-                <div
-                  key={listing!.id}
-                  className="grid w-full grid-cols-2 gap-4 mt-5"
-                >
-                  <div className="justify-center flex w-full">
-                    {listing!.asset.image ? (
+                <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+                  <div className="flex justify-center w-full">
+                    {listing?.asset.image ? (
                       <MediaRenderer
-                        className="rounded-lg mb-2"
-                        width="200px"
-                        height="200px"
-                        src={listing!.asset.image}
+                        className="rounded-lg"
+                        width="100%"
+                        height="auto"
+                        src={listing.asset.image}
                       />
                     ) : (
-                      <div className="w-[200px] h-[200px] my-2 bg-border  rounded-lg items-center justify-center flex">
-                        <Image className="w-14 h-14 text-gray-200 "></Image>
+                      <div className="w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-border rounded-lg flex items-center justify-center">
+                        <Image className="w-14 h-14 text-gray-200" />
                       </div>
                     )}
                   </div>
                   <div className="">
-                    <div className="text-4xl mb-10 font-bold text-black ">
+                    <div className="text-2xl md:text-4xl font-bold mb-10 text-black">
                       <span className="bg-orange-400 px-1.5">
-                        {listing!.asset.name}
+                        {listing?.asset.name}
                       </span>
                     </div>
-
                     <div className="flex flex-row items-center gap-4">
-                      <Label className="text-bold text-1xl w-32">Seller</Label>
+                      <Label className="font-bold text-lg md:w-32">Seller</Label>
                       <div className="flex flex-row items-center gap-2">
                         {formatAddress(creatorAddress!)}
                         <Tooltip>
                           <TooltipTrigger>
                             {creatorAddressCopied ? (
-                              <Check
-                                onClick={() => {
-                                  copyToClipboard(assetContractAddress!);
-                                }}
-                                className="w-4 text-green-500 "
-                              ></Check>
+                              <Check className="w-4 text-green-500" />
                             ) : (
                               <Copy
                                 onClick={() => {
@@ -177,7 +164,7 @@ const ListingPage = () => {
                                   setCreatorAddressCopied(true);
                                 }}
                                 className="w-4 text-gray-400 hover:text-white cursor-pointer"
-                              ></Copy>
+                              />
                             )}
                           </TooltipTrigger>
                           <TooltipContent>
@@ -191,7 +178,7 @@ const ListingPage = () => {
                       </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
-                      <Label className="text-bold text-1xl w-32">
+                      <Label className="font-bold text-lg md:w-32">
                         Rune Address
                       </Label>
                       <div className="flex flex-row items-center gap-2">
@@ -199,12 +186,7 @@ const ListingPage = () => {
                         <Tooltip>
                           <TooltipTrigger>
                             {contractAddressCopied ? (
-                              <Check
-                                onClick={() => {
-                                  copyToClipboard(assetContractAddress!);
-                                }}
-                                className="w-4 text-green-500 "
-                              ></Check>
+                              <Check className="w-4 text-green-500" />
                             ) : (
                               <Copy
                                 onClick={() => {
@@ -212,7 +194,7 @@ const ListingPage = () => {
                                   setContractAddressCopied(true);
                                 }}
                                 className="w-4 text-gray-400 hover:text-white cursor-pointer"
-                              ></Copy>
+                              />
                             )}
                           </TooltipTrigger>
                           <TooltipContent>
@@ -226,39 +208,39 @@ const ListingPage = () => {
                       </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
-                      <Label className="text-bold text-1xl w-32">Rune Id</Label>
-                      <div>{listing!.asset.id}</div>
+                      <Label className="font-bold text-lg md:w-32">Rune Id</Label>
+                      <div>{listing?.asset.id}</div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
-                      <Label className="text-bold text-1xl w-32">
+                      <Label className="font-bold text-lg md:w-32">
                         Buyout Price
                       </Label>
                       <div>
-                        {listing!.currencyValuePerToken.displayValue}{" "}
-                        {listing!.currencyValuePerToken.symbol}
+                        {listing?.currencyValuePerToken.displayValue}{" "}
+                        {listing?.currencyValuePerToken.symbol}
                       </div>
                     </div>
                   </div>
                 </div>
               )}
             </CardContent>
-            <CardFooter className="px-0 relative justify-end mb-6 mr-4">
-                <Web3Button
-                  connectWallet={{...connectWalletProps}}
-                  contractAddress={contractAddress}
-                  action={async () => {
-                    const buyerAddress = await signer?.getAddress();
-                    await buyDirectListing({
-                      listingId: listingId.toString(), // ID of the listing to buy
-                      quantity: "1",
-                      buyer: buyerAddress!, // Wallet to buy for
-                    }).finally(
-                        () => { router.push(`/`) }
-                    )
-                  }}
-                >
-                  Buy Now
-                </Web3Button>
+            <CardFooter className="px-0 justify-end mb-6 mr-4">
+              <Web3Button
+                connectWallet={{ ...connectWalletProps }}
+                contractAddress={contractAddress}
+                action={async () => {
+                  const buyerAddress = await signer?.getAddress();
+                  await buyDirectListing({
+                    listingId: listingId.toString(), // ID of the listing to buy
+                    quantity: "1",
+                    buyer: buyerAddress!, // Wallet to buy for
+                  }).finally(() => {
+                    router.push(`/`);
+                  });
+                }}
+              >
+                Buy Now
+              </Web3Button>
             </CardFooter>
           </Card>
         </TabsContent>

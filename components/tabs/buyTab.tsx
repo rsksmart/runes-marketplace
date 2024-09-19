@@ -41,38 +41,33 @@ export default function BuyTab() {
       </CardHeader>
       <CardContent>
         {loadingListings ? (
-          <div>
-            <div className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4 mt-3">
-              {[...Array(10)].map((e, i) => (
-                <div key={i}>
-                  <div className="max-w-200 max-h-200">
-                    <div className="w-[200px] h-[200px] my-2 bg-border rounded-lg items-center justify-center flex">
-                      <Image className="w-14 h-14 text-gray-200"></Image>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="h-[10px] my-2 bg-border rounded-lg  max-w-[150px]"></div>
-                    <div className="h-[10px] my-2 bg-border rounded-lg  max-w-[80px]"></div>
+          <div className="animate-pulse grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-6 mt-3">
+            {[...Array(10)].map((_, i) => (
+              <div key={i}>
+                <div className="max-w-[200px] max-h-[200px]">
+                  <div className="w-[200px] h-[200px] my-2 bg-border rounded-lg items-center justify-center flex">
+                    <Image className="w-14 h-14 text-gray-200" />
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="">
+                  <div className="h-[10px] my-2 bg-border rounded-lg max-w-[150px]" />
+                  <div className="h-[10px] my-2 bg-border rounded-lg max-w-[80px]" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
-          <div className="grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-4  mt-5">
+          <div className="grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-6 mt-5">
             {listings
               ?.filter((listing) => listing.status === Status.Active)
               .map((listing) => (
                 <div
                   key={listing.id}
-                  className="hover:text-purple-400 hover:text-bold px-4"
+                  className="hover:text-purple-400 hover:font-bold px-4 cursor-pointer"
                   onClick={() => router.push(`/listings/${listing.id}`)}
                 >
                   <div className="w-max-[200px] max-h-[200px]">
-                    <Link
-                      className="w-[200px]"
-                      href={`/listings/${listing.id}`}
-                    >
+                    <Link href={`/listings/${listing.id}`} className="w-[200px]">
                       {listing.asset.image ? (
                         <div className="w-[200px] h-[200px] rounded-lg my-2">
                           <MediaRenderer
@@ -83,17 +78,16 @@ export default function BuyTab() {
                           />
                         </div>
                       ) : (
-                        // <img className='rounded-lg mb-2' src={listing.asset.image}></img>
                         <div className="w-[200px] h-[200px] my-2 bg-border rounded-lg items-center justify-center flex">
-                          <Image className="w-14 h-14 text-gray-200"></Image>
+                          <Image className="w-14 h-14 text-gray-200" />
                         </div>
                       )}
                     </Link>
                   </div>
                   <div className="flex flex-col items-start">
                     <Link
-                      className="bold tracking-wide"
-                      href={`/listing/${listing.id}`}
+                      href={`/listings/${listing.id}`}
+                      className="font-bold tracking-wide"
                     >
                       {listing.asset.name}
                     </Link>
