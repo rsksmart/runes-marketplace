@@ -18,3 +18,5 @@ export const Config = {
   clientId: clientId,
   marketplaceContractAddress: marketplaceContractAddress,
 };
+
+export const thirdwebClient = createThirdwebClient({clientId: Config.clientId})
