@@ -7,6 +7,8 @@ import {
   ThirdwebNftMedia,
   useContractRead,
   useContractWrite,
+  Web3Button,
+  useCreateDirectListing,
 } from "@thirdweb-dev/react";
 import {
   Card,
@@ -22,9 +24,12 @@ import {
 } from "@/components/ui/tooltip";
 import { CircleHelp } from "lucide-react";
 import { useState, useEffect, ChangeEvent } from "react";
-import { marketplaceContractAddress } from "@/constants";
+import { connectWalletProps, marketplaceContractAddress } from "@/constants";
 import { Tab } from ".";
-import { formatAddress } from "@/lib/utils";
+import { formatAddress, toastStyle } from "@/lib/utils";
+import { NATIVE_TOKEN_ADDRESS } from "@thirdweb-dev/sdk";
+import { toast } from "react-hot-toast";
+import { TransactionButton } from "thirdweb/react";
 
 export default function SellTab({
   setActiveTab,
@@ -121,6 +126,10 @@ export default function SellTab({
     }
   };
 
+  // function create DirectListing
+  const { mutateAsync: createDirectListing } =
+    useCreateDirectListing(marketplaceContract);
+
   // Set the selected tokenId when the NFT changes
   useEffect(() => {
     if (ownedNFTs && ownedNFTs.length > 0) {
@@ -212,7 +221,6 @@ export default function SellTab({
             </div>
 
             {/* Approval Status */}
-
             <div className="mb-6">
               {isFetching && inputChanged ? (
                 <p className="text-gray-300">Checking approval status...</p>
@@ -223,7 +231,7 @@ export default function SellTab({
                   className="text-green-600 relative group flex items-center"
                   title="The marketplace contract has been approved to handle the assets"
                 >
-                  marketplace approved.
+                  Marketplace approved.
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -262,12 +270,37 @@ export default function SellTab({
             </div>
 
             {/* List Button */}
-            <div className="mt-6">{/* Your List Button Code Here */}</div>
-            {hasApproval && (
-              <button className="bg-white text-black px-4 py-2 rounded">
-                List Button
-              </button>
-            )}
+            <div className="mt-6">
+              {hasApproval && ownedNFTs && ownedNFTs.length > 0 && (
+                <Web3Button
+                  {...connectWalletProps}
+                  contractAddress={marketplaceContractAddress as string}
+                  action={async () => {
+                    try {
+                      await createDirectListing({
+                        assetContractAddress: formData.address,
+                        tokenId: formData.tokenId,
+                        pricePerToken: formData.price,
+                        currencyContractAddress: NATIVE_TOKEN_ADDRESS,
+                        quantity: 1,
+                        startTimestamp: new Date(),
+                        endTimestamp: new Date(
+                          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+                        ),
+                      });
+                      setActiveTab(Tab.BUY);
+                    } catch (error) {
+                      console.error("Error creating listing:", error);
+                      toast.error(
+                        "Failed to create listing. Please try again."
+                      );
+                    }
+                  }}
+                >
+                  {hasApproval ? "List" : "Approve and List"}
+                </Web3Button>
+              )}
+            </div>
           </div>
 
           {/* Right Side: NFT Display */}

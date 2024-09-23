@@ -16,8 +16,8 @@ export async function copyToClipboard(string: string) {
 
 
 export const toastStyle = {
-	borderRadius: "4px",
-	background: "#222528",
-	color: "#fff",
+  background: "#333",
+  color: "#fff",
+  padding: "10px",
+  borderRadius: "10px",
 };
-
