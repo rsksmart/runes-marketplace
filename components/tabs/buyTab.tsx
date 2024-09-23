@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/tooltip";
 import { Image, CircleHelp } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Config } from "@/app/config";
+import { marketplaceContractAddress } from "@/constants";
 
 export default function BuyTab() {
   const { contract } = useContract(
-    Config.marketplaceContractAddress,
+    marketplaceContractAddress,
     "marketplace-v3",
   );
   const { data: listings, isLoading: loadingListings } =

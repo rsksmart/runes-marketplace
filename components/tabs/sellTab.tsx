@@ -2,11 +2,11 @@
 
 import {
   useContract,
-  useCreateDirectListing,
-  Web3Button,
   useOwnedNFTs,
   useAddress,
   ThirdwebNftMedia,
+  useContractRead,
+  useContractWrite,
 } from "@thirdweb-dev/react";
 import {
   Card,
@@ -15,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { NATIVE_TOKEN_ADDRESS } from "@thirdweb-dev/sdk";
 import {
   Tooltip,
   TooltipContent,
@@ -23,20 +22,10 @@ import {
 } from "@/components/ui/tooltip";
 import { CircleHelp } from "lucide-react";
 import { useState, useEffect, ChangeEvent } from "react";
-import { Config } from "@/app/config";
-import { connectWalletProps } from "@/constants";
+import { marketplaceContractAddress } from "@/constants";
 import { Tab } from ".";
 
-// Helper function to extract error message
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  return String(error);
-}
-
 export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => void }) {
-  // Marketplace contract address from config
-  const marketplaceContractAddress = Config.marketplaceContractAddress;
-
   // Get the marketplace contract instance
   const { contract: marketplaceContract } = useContract(
     marketplaceContractAddress,
@@ -55,7 +44,8 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
 
   // Get the nftContract based on the user's input
   const { contract: nftContract } = useContract(
-    formData.address || undefined
+    formData.address,
+    "edition" // Specify the contract type
   );
 
   // Fetch the owned NFTs using the nftContract and address
@@ -63,13 +53,6 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
 
   // State for pagination
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Mutation to create a direct listing on the marketplace
-  const {
-    mutateAsync: createDirectListing,
-    isLoading: isListingLoading,
-    error: listingError,
-  } = useCreateDirectListing(marketplaceContract);
 
   // Handle form input changes
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,6 +78,32 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
   const handlePrevious = () => {
     if (ownedNFTs && currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  // Use useContractRead to call 'isApprovedForAll'
+  const { data: hasApproval, isLoading: isFetching } = useContractRead(
+    nftContract,
+    "isApprovedForAll",
+    [address, marketplaceContract?.getAddress()]
+  );
+
+  // Use useContractWrite to set approval for all
+  const { mutateAsync: setApprovalForAll, isLoading: isApproving } = useContractWrite(
+    nftContract,
+    "setApprovalForAll"
+  );
+
+  // Function to handle approval
+  const handleSetApprovalForAll = async () => {
+    try {
+      const transactionResult = await setApprovalForAll({
+        args: [marketplaceContract?.getAddress(), true],
+      });
+      console.log("setApprovalForAll transaction result:", transactionResult);
+      // Optionally, refetch the approval status after setting approval
+    } catch (error) {
+      console.error("Error setting approval:", error);
     }
   };
 
@@ -181,54 +190,29 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
               )}
             </div>
 
+            {/* Approval Status */}
+            <div className="mb-6">
+              {isFetching ? (
+                <p className="text-gray-700">Checking approval status...</p>
+              ) : hasApproval ? (
+                <p className="text-green-600">You have approved the marketplace contract.</p>
+              ) : (
+                <div>
+                  <p className="text-red-600 mb-2">You have not approved the marketplace contract.</p>
+                  <button
+                    onClick={handleSetApprovalForAll}
+                    disabled={isApproving}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md disabled:opacity-50"
+                  >
+                    {isApproving ? "Approving..." : "Approve Marketplace"}
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* List Button */}
             <div className="mt-6">
-              <Web3Button
-                {...connectWalletProps}
-                contractAddress={marketplaceContractAddress}
-                action={async () => {
-                  // Ensure all required fields are filled
-                  if (!formData.address || !formData.tokenId || !formData.price) {
-                    alert("Please fill in all the fields.");
-                    return;
-                  }
-
-                  if (!isPriceValid) {
-                    alert("Please enter a valid price.");
-                    return;
-                  }
-
-                  if (!marketplaceContract) {
-                    alert("Marketplace contract is not ready.");
-                    return;
-                  }
-
-                  try {
-                    // Create a direct listing
-                    const listing = await createDirectListing({
-                      assetContractAddress: formData.address, // Corrected to use the NFT contract address
-                      tokenId: formData.tokenId, // Corrected syntax and using formData.tokenId
-                      pricePerToken: formData.price,
-                      currencyContractAddress: NATIVE_TOKEN_ADDRESS,
-                      quantity: 1,
-                      startTimestamp: new Date(),
-                      endTimestamp: new Date(
-                        new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-                      ),
-                    });
-                    console.log("Listing created:", listing);
-                    alert("Listing created successfully!");
-                    setActiveTab(Tab.BUY);
-                  } catch (error) {
-                    console.error("Error creating listing:", error);
-                    alert("Failed to create listing.");
-                  }
-                }}
-                isDisabled={isListingLoading || !isPriceValid}
-              >
-                {isListingLoading ? "Listing..." : "List"}
-              </Web3Button>
-            
+              {/* Your List Button Code Here */}
             </div>
           </div>
 

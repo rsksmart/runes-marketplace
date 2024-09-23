@@ -8,8 +8,7 @@ import { RootstockTestnet } from "@thirdweb-dev/chains";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
-import { Config } from "@/app/config";
-import { connectWalletProps } from "@/constants/index"
+import { clientId, connectWalletProps } from "@/constants/index"
 
 
 
@@ -28,7 +27,7 @@ export default function RootLayout({
         embeddedWallet(),
 
       ]}
-      clientId={Config.clientId}
+      clientId={clientId}
     >
       <html lang="en">
         <body className="h-screen">
