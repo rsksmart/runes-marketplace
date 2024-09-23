@@ -26,7 +26,7 @@ import { marketplaceContractAddress } from "@/constants";
 export default function BuyTab() {
   const { contract } = useContract(
     marketplaceContractAddress,
-    "marketplace-v3",
+    "marketplace-v3"
   );
   const { data: listings, isLoading: loadingListings } =
     useDirectListings(contract);
@@ -57,7 +57,7 @@ export default function BuyTab() {
             ))}
           </div>
         ) : (
-          <div className="grid w-full md:grid-cols-5 xl:grid-cols-8 sm:grid-cols-2 gap-6 mt-5">
+          <div className="grid w-full md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:grid-cols-2 gap-6 mt-5">
             {listings
               ?.filter((listing) => listing.status === Status.Active)
               .map((listing) => (
@@ -66,19 +66,22 @@ export default function BuyTab() {
                   className="hover:text-purple-400 hover:font-bold px-4 cursor-pointer"
                   onClick={() => router.push(`/listings/${listing.id}`)}
                 >
-                  <div className="w-max-[200px] max-h-[200px]">
-                    <Link href={`/listings/${listing.id}`} className="w-[200px]">
+                  <div className="max-w-[200px] max-h-[200px]">
+                    <Link
+                      href={`/listings/${listing.id}`}
+                      className="w-[150px]"
+                    >
                       {listing.asset.image ? (
-                        <div className="w-[200px] h-[200px] rounded-lg my-2">
+                        <div className="w-[150px] h-[150px] rounded-lg my-2">
                           <MediaRenderer
                             className="rounded-lg"
-                            width="200px"
-                            height="200px"
+                            width="150px"
+                            height="150px"
                             src={listing.asset.image}
                           />
                         </div>
                       ) : (
-                        <div className="w-[200px] h-[200px] my-2 bg-border rounded-lg items-center justify-center flex">
+                        <div className="w-full max-w-[150px] h-[150px] my-2 bg-border rounded-lg items-center justify-center flex">
                           <Image className="w-14 h-14 text-gray-200" />
                         </div>
                       )}

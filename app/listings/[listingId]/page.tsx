@@ -24,23 +24,22 @@ import { Check, ChevronsLeft, Copy, Image } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Config } from "@/app/config";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { connectWalletProps } from "@/constants";
+import { connectWalletProps, marketplaceContractAddress } from "@/constants";
 
 const ListingPage = () => {
-  const contractAddress = Config.marketplaceContractAddress;
+  const contractAddress = marketplaceContractAddress;
 
   const { contract } = useContract(contractAddress, "marketplace-v3");
 
   const { listingId } = useParams() as unknown as { listingId: number };
   const { data: listing, isLoading: loadingListing } = useDirectListing(
     contract,
-    listingId,
+    listingId
   );
   const { mutateAsync: buyDirectListing } = useBuyDirectListing(contract);
   const signer = useSigner();
@@ -77,12 +76,18 @@ const ListingPage = () => {
     <Tabs className="flex w-full flex-col items-center" defaultValue="buy">
       <TabsList className="grid grid-cols-2 w-fit mb-1">
         <TabsTrigger value="buy">
-          <Link className="font-bold tracking-wide" href={`/?active=${Tab.BUY}`}>
+          <Link
+            className="font-bold tracking-wide"
+            href={`/?active=${Tab.BUY}`}
+          >
             Buy
           </Link>
         </TabsTrigger>
         <TabsTrigger value="sell">
-          <Link className="font-bold tracking-wide" href={`/?active=${Tab.SELL}`}>
+          <Link
+            className="font-bold tracking-wide"
+            href={`/?active=${Tab.SELL}`}
+          >
             Sell
           </Link>
         </TabsTrigger>
@@ -150,7 +155,9 @@ const ListingPage = () => {
                       </span>
                     </div>
                     <div className="flex flex-row items-center gap-4">
-                      <Label className="font-bold text-lg md:w-32">Seller</Label>
+                      <Label className="font-bold text-lg md:w-32">
+                        Seller
+                      </Label>
                       <div className="flex flex-row items-center gap-2">
                         {formatAddress(creatorAddress!)}
                         <Tooltip>
@@ -208,7 +215,9 @@ const ListingPage = () => {
                       </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
-                      <Label className="font-bold text-lg md:w-32">Rune Id</Label>
+                      <Label className="font-bold text-lg md:w-32">
+                        Rune Id
+                      </Label>
                       <div>{listing?.asset.id}</div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
@@ -227,7 +236,7 @@ const ListingPage = () => {
             <CardFooter className="px-0 justify-end mb-6 mr-4">
               <Web3Button
                 connectWallet={{ ...connectWalletProps }}
-                contractAddress={contractAddress}
+                contractAddress={contractAddress as `0x${string}`}
                 action={async () => {
                   const buyerAddress = await signer?.getAddress();
                   await buyDirectListing({

@@ -24,8 +24,13 @@ import { CircleHelp } from "lucide-react";
 import { useState, useEffect, ChangeEvent } from "react";
 import { marketplaceContractAddress } from "@/constants";
 import { Tab } from ".";
+import { formatAddress } from "@/lib/utils";
 
-export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => void }) {
+export default function SellTab({
+  setActiveTab,
+}: {
+  setActiveTab: (tab: Tab) => void;
+}) {
   // Get the marketplace contract instance
   const { contract: marketplaceContract } = useContract(
     marketplaceContractAddress,
@@ -42,6 +47,8 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
     price: "",
   });
 
+  const [inputChanged, setInputChanged] = useState(false);
+
   // Get the nftContract based on the user's input
   const { contract: nftContract } = useContract(
     formData.address,
@@ -49,7 +56,10 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
   );
 
   // Fetch the owned NFTs using the nftContract and address
-  const { data: ownedNFTs, isLoading: isNFTsLoading } = useOwnedNFTs(nftContract, address);
+  const { data: ownedNFTs, isLoading: isNFTsLoading } = useOwnedNFTs(
+    nftContract,
+    address
+  );
 
   // State for pagination
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -64,6 +74,9 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
 
     // Reset pagination when address changes
     if (name === "address") {
+      if (value !== "") {
+        setInputChanged(true);
+      }
       setCurrentIndex(0);
     }
   };
@@ -82,17 +95,18 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
   };
 
   // Use useContractRead to call 'isApprovedForAll'
-  const { data: hasApproval, isLoading: isFetching } = useContractRead(
-    nftContract,
-    "isApprovedForAll",
-    [address, marketplaceContract?.getAddress()]
-  );
+  const {
+    data: hasApproval,
+    isLoading: isFetching,
+    isFetched,
+  } = useContractRead(nftContract, "isApprovedForAll", [
+    address,
+    marketplaceContract?.getAddress(),
+  ]);
 
   // Use useContractWrite to set approval for all
-  const { mutateAsync: setApprovalForAll, isLoading: isApproving } = useContractWrite(
-    nftContract,
-    "setApprovalForAll"
-  );
+  const { mutateAsync: setApprovalForAll, isLoading: isApproving } =
+    useContractWrite(nftContract, "setApprovalForAll");
 
   // Function to handle approval
   const handleSetApprovalForAll = async () => {
@@ -118,27 +132,29 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
   }, [ownedNFTs, currentIndex]);
 
   // Validate price input
-  const isPriceValid = !isNaN(Number(formData.price)) && Number(formData.price) > 0;
+  const isPriceValid =
+    !isNaN(Number(formData.price)) && Number(formData.price) > 0;
 
   return (
     <Card>
       {/* Card Header */}
       <CardHeader>
         <CardTitle>Sell</CardTitle>
-        <CardDescription>
-          Upload your Rune to the marketplace!
-        </CardDescription>
+        <CardDescription>Upload your Rune to the marketplace!</CardDescription>
       </CardHeader>
 
       {/* Card Content */}
       <CardContent>
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Side: Form Inputs */}
           <div className="flex-1">
             {/* Input for Rune Contract Address */}
             <div className="mb-6">
               <div className="flex items-center gap-2">
-                <label htmlFor="address" className="block text-gray-700 font-medium">
+                <label
+                  htmlFor="address"
+                  className="block text-gray-300 font-medium"
+                >
                   Rune Contract Address
                 </label>
                 <Tooltip>
@@ -156,14 +172,17 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
                 id="address"
                 value={formData.address}
                 onChange={handleChange}
-                className="mt-2 w-full px-3 py-2 border border-gray-400 rounded-md focus:border-gray-500 focus:outline-none bg-transparent text-gray-800"
+                className="mt-2 w-full px-3 py-2 border border-gray-400 rounded-md focus:border-gray-500 focus:outline-none bg-transparent text-gray-200"
               />
             </div>
 
             {/* Input for Sale Price */}
             <div className="mb-6">
               <div className="flex items-center gap-2">
-                <label htmlFor="price" className="block text-gray-700 font-medium">
+                <label
+                  htmlFor="price"
+                  className="block text-gray-300 font-medium"
+                >
                   Sale Price
                 </label>
                 <Tooltip>
@@ -181,24 +200,33 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
                 id="price"
                 value={formData.price}
                 onChange={handleChange}
-                className="mt-2 w-full px-3 py-2 border border-gray-400 rounded-md focus:border-gray-500 focus:outline-none bg-transparent text-gray-800"
+                className="mt-2 w-full px-3 py-2 border border-gray-400 rounded-md focus:border-gray-500 focus:outline-none bg-transparent text-gray-200"
                 min="0"
                 step="any"
               />
               {!isPriceValid && formData.price !== "" && (
-                <p className="text-red-500 text-sm mt-1">Please enter a valid price.</p>
+                <p className="text-red-500 text-sm mt-1">
+                  Please enter a valid price.
+                </p>
               )}
             </div>
 
             {/* Approval Status */}
             <div className="mb-6">
-              {isFetching ? (
-                <p className="text-gray-700">Checking approval status...</p>
-              ) : hasApproval ? (
-                <p className="text-green-600">You have approved the marketplace contract.</p>
-              ) : (
+              {isFetching && inputChanged ? (
+                <p className="text-gray-300">Checking approval status...</p>
+              ) : null}
+
+              {isFetched && hasApproval ? (
+                <p className="text-green-600">
+                  You have approved the marketplace contract.
+                </p>
+              ) : null}
+              {isFetched && !hasApproval ? (
                 <div>
-                  <p className="text-red-600 mb-2">You have not approved the marketplace contract.</p>
+                  <p className="text-red-600 mb-2">
+                    You have not approved the marketplace contract.
+                  </p>
                   <button
                     onClick={handleSetApprovalForAll}
                     disabled={isApproving}
@@ -207,13 +235,11 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
                     {isApproving ? "Approving..." : "Approve Marketplace"}
                   </button>
                 </div>
-              )}
+              ) : null}
             </div>
 
             {/* List Button */}
-            <div className="mt-6">
-              {/* Your List Button Code Here */}
-            </div>
+            <div className="mt-6">{/* Your List Button Code Here */}</div>
           </div>
 
           {/* Right Side: NFT Display */}
@@ -226,25 +252,26 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
                 <div>
                   {/* Display the current NFT */}
                   <div className="border border-gray-300 p-4 rounded-md">
-                    <h3 className="text-lg font-semibold mb-2 text-gray-800">
+                    <h3 className="text-lg font-bold mb-2 text-gray-200 mx-auto text-center">
                       {ownedNFTs[currentIndex].metadata.name ||
                         `Token ID: ${ownedNFTs[currentIndex].metadata.id}`}
                     </h3>
                     <ThirdwebNftMedia
                       metadata={ownedNFTs[currentIndex].metadata}
-                      className="w-full h-auto mb-2"
+                      className="w-full mx-auto h-auto mb-2"
                     />
                     {ownedNFTs[currentIndex].metadata.description && (
-                      <p className="text-gray-700">
+                      <p className="text-gray-300">
                         {ownedNFTs[currentIndex].metadata.description}
                       </p>
                     )}
-                    <p className="text-gray-700">
+                    <p className="text-gray-300">
                       <strong>Token ID:</strong>{" "}
                       {ownedNFTs[currentIndex].metadata.id.toString()}
                     </p>
-                    <p className="text-gray-700">
-                      <strong>Owner:</strong> {ownedNFTs[currentIndex].owner}
+                    <p className="text-gray-300">
+                      <strong>Owner:</strong>{" "}
+                      {formatAddress(ownedNFTs[currentIndex].owner)}
                     </p>
                   </div>
 
@@ -254,14 +281,14 @@ export default function SellTab({ setActiveTab }: { setActiveTab: (tab: Tab) => 
                       <button
                         onClick={handlePrevious}
                         disabled={currentIndex === 0}
-                        className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
+                        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md disabled:opacity-50"
                       >
                         Previous
                       </button>
                       <button
                         onClick={handleNext}
                         disabled={currentIndex === ownedNFTs.length - 1}
-                        className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
+                        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md disabled:opacity-50"
                       >
                         Next
                       </button>
