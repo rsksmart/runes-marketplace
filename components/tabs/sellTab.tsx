@@ -212,16 +212,39 @@ export default function SellTab({
             </div>
 
             {/* Approval Status */}
+
             <div className="mb-6">
               {isFetching && inputChanged ? (
                 <p className="text-gray-300">Checking approval status...</p>
               ) : null}
 
               {isFetched && hasApproval ? (
-                <p className="text-green-600">
-                  You have approved the marketplace contract.
+                <p
+                  className="text-green-600 relative group flex items-center"
+                  title="The marketplace contract has been approved to handle the assets"
+                >
+                  marketplace approved.
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-5 h-5 ml-2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span className="absolute hidden group-hover:block bg-gray-700 text-white text-xs rounded p-1 mt-2 left-0">
+                    The marketplace contract has been approved to handle the
+                    assets
+                  </span>
                 </p>
               ) : null}
+
               {isFetched && !hasApproval ? (
                 <div>
                   <p className="text-red-600 mb-2">
@@ -240,6 +263,11 @@ export default function SellTab({
 
             {/* List Button */}
             <div className="mt-6">{/* Your List Button Code Here */}</div>
+            {hasApproval && (
+              <button className="bg-white text-black px-4 py-2 rounded">
+                List Button
+              </button>
+            )}
           </div>
 
           {/* Right Side: NFT Display */}
