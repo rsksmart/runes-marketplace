@@ -15,6 +15,7 @@ import { copyToClipboard, formatAddress } from "@/lib/utils";
 import {
   MediaRenderer,
   useBuyDirectListing,
+  useCancelDirectListing,
   useContract,
   useDirectListing,
   useSigner,
@@ -30,18 +31,27 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { connectWalletProps, marketplaceContractAddress } from "@/constants";
+import { useActiveAccount } from "thirdweb/react";
 
 const ListingPage = () => {
-  const contractAddress = marketplaceContractAddress;
+  
+  const account = useActiveAccount();
+  const marketPlace = marketplaceContractAddress;
+  
+  const { contract: marketPlaceContract } = useContract(marketPlace, "marketplace-v3");
 
-  const { contract } = useContract(contractAddress, "marketplace-v3");
 
   const { listingId } = useParams() as unknown as { listingId: number };
   const { data: listing, isLoading: loadingListing } = useDirectListing(
-    contract,
+    marketPlaceContract,
     listingId
   );
-  const { mutateAsync: buyDirectListing } = useBuyDirectListing(contract);
+  const { mutateAsync: buyDirectListing } = useBuyDirectListing(marketPlaceContract);
+
+  const {
+    mutateAsync: cancelDirectListing,
+  } = useCancelDirectListing(marketPlaceContract);
+
   const signer = useSigner();
   const router = useRouter();
 
@@ -53,6 +63,7 @@ const ListingPage = () => {
   const creatorAddress: string | undefined = listing?.creatorAddress;
   const assetContractAddress: string | undefined =
     listing?.assetContractAddress;
+
 
   useEffect(() => {
     if (contractAddressCopied) {
@@ -234,9 +245,10 @@ const ListingPage = () => {
               )}
             </CardContent>
             <CardFooter className="px-0 justify-end mb-6 mr-4">
-              <Web3Button
+              {account === listing?.creatorAddress ?
+                <Web3Button
                 connectWallet={{ ...connectWalletProps }}
-                contractAddress={contractAddress as `0x${string}`}
+                contractAddress={marketPlace as `0x${string}`}
                 action={async () => {
                   const buyerAddress = await signer?.getAddress();
                   await buyDirectListing({
@@ -249,7 +261,14 @@ const ListingPage = () => {
                 }}
               >
                 Buy Now
-              </Web3Button>
+              </Web3Button>:  <Web3Button
+                connectWallet={{ ...connectWalletProps }}
+                contractAddress={marketPlace as `0x${string}`}
+                action={async () =>{await  cancelDirectListing(BigInt(listingId)).finally(()=>router.push('/'))} }
+                style={{ color: "white" , backgroundColor: 'red'}}
+              >
+                Cancel listing
+              </Web3Button>}
             </CardFooter>
           </Card>
         </TabsContent>
