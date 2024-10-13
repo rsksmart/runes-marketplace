@@ -34,13 +34,16 @@ import { connectWalletProps, marketplaceContractAddress } from "@/constants";
 import { useActiveAccount } from "thirdweb/react";
 
 const ListingPage = () => {
+
+  const wallet = useActiveAccount();
+
   
-  const account = useActiveAccount();
+  
   const marketPlace = marketplaceContractAddress;
   
   const { contract: marketPlaceContract } = useContract(marketPlace, "marketplace-v3");
-
-
+  
+  
   const { listingId } = useParams() as unknown as { listingId: number };
   const { data: listing, isLoading: loadingListing } = useDirectListing(
     marketPlaceContract,
@@ -51,18 +54,18 @@ const ListingPage = () => {
   const {
     mutateAsync: cancelDirectListing,
   } = useCancelDirectListing(marketPlaceContract);
-
+  
   const signer = useSigner();
   const router = useRouter();
-
   const [buyingInProgress, setBuyingInProgress] = useState(false);
-
+  
   const [contractAddressCopied, setContractAddressCopied] = useState(false);
   const [creatorAddressCopied, setCreatorAddressCopied] = useState(false);
 
   const creatorAddress: string | undefined = listing?.creatorAddress;
   const assetContractAddress: string | undefined =
-    listing?.assetContractAddress;
+  listing?.assetContractAddress;
+
 
 
   useEffect(() => {
@@ -245,30 +248,30 @@ const ListingPage = () => {
               )}
             </CardContent>
             <CardFooter className="px-0 justify-end mb-6 mr-4">
-              {account === listing?.creatorAddress ?
+              {wallet?.address !== creatorAddress ?
                 <Web3Button
-                connectWallet={{ ...connectWalletProps }}
-                contractAddress={marketPlace as `0x${string}`}
-                action={async () => {
-                  const buyerAddress = await signer?.getAddress();
-                  await buyDirectListing({
-                    listingId: listingId.toString(), // ID of the listing to buy
-                    quantity: "1",
-                    buyer: buyerAddress!, // Wallet to buy for
-                  }).finally(() => {
-                    router.push(`/`);
-                  });
-                }}
-              >
-                Buy Now
-              </Web3Button>:  <Web3Button
-                connectWallet={{ ...connectWalletProps }}
-                contractAddress={marketPlace as `0x${string}`}
-                action={async () =>{await  cancelDirectListing(BigInt(listingId)).finally(()=>router.push('/'))} }
-                style={{ color: "white" , backgroundColor: 'red'}}
-              >
-                Cancel listing
-              </Web3Button>}
+                  connectWallet={{ ...connectWalletProps }}
+                  contractAddress={marketPlace as `0x${string}`}
+                  action={async () => {
+                    const buyerAddress = await signer?.getAddress();
+                    await buyDirectListing({
+                      listingId: listingId.toString(), // ID of the listing to buy
+                      quantity: "1",
+                      buyer: buyerAddress!, // Wallet to buy for
+                    })
+                  }}
+                  onSuccess={()=>router.push('/')}
+                >
+                  Buy Now
+                </Web3Button> : <Web3Button
+                  connectWallet={{ ...connectWalletProps }}
+                  contractAddress={marketPlace as `0x${string}`}
+                  action={async () => { await cancelDirectListing(BigInt(listingId)).finally(() => router.push('/')) }}
+                  style={{ color: "white", backgroundColor: 'red' }}
+                  onSuccess={async () => {router.push('/') }}
+                >
+                  Cancel listing
+                </Web3Button>}
             </CardFooter>
           </Card>
         </TabsContent>
