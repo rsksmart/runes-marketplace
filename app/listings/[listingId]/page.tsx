@@ -37,7 +37,6 @@ const ListingPage = () => {
 
   const wallet = useActiveAccount();
 
-  console.log(wallet)
   
   
   const marketPlace = marketplaceContractAddress;
@@ -66,7 +65,8 @@ const ListingPage = () => {
   const creatorAddress: string | undefined = listing?.creatorAddress;
   const assetContractAddress: string | undefined =
   listing?.assetContractAddress;
-  console.log('creator',listing?.creatorAddress)
+
+
 
   useEffect(() => {
     if (contractAddressCopied) {
@@ -248,7 +248,7 @@ const ListingPage = () => {
               )}
             </CardContent>
             <CardFooter className="px-0 justify-end mb-6 mr-4">
-              {wallet === listing?.creatorAddress ?
+              {wallet?.address !== creatorAddress ?
                 <Web3Button
                   connectWallet={{ ...connectWalletProps }}
                   contractAddress={marketPlace as `0x${string}`}
@@ -258,10 +258,9 @@ const ListingPage = () => {
                       listingId: listingId.toString(), // ID of the listing to buy
                       quantity: "1",
                       buyer: buyerAddress!, // Wallet to buy for
-                    }).finally(() => {
-                      router.push(`/`);
-                    });
+                    })
                   }}
+                  onSuccess={()=>router.push('/')}
                 >
                   Buy Now
                 </Web3Button> : <Web3Button
@@ -269,7 +268,7 @@ const ListingPage = () => {
                   contractAddress={marketPlace as `0x${string}`}
                   action={async () => { await cancelDirectListing(BigInt(listingId)).finally(() => router.push('/')) }}
                   style={{ color: "white", backgroundColor: 'red' }}
-                  onSuccess={async () => { console.log('success') }}
+                  onSuccess={async () => {router.push('/') }}
                 >
                   Cancel listing
                 </Web3Button>}
