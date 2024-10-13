@@ -1,16 +1,15 @@
 "use client";
-
 import "@/app/globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  ConnectWallet,
   metamaskWallet,
   trustWallet,
   walletConnect,
-  ThirdwebProvider,
+  ThirdwebProvider as ThirdwebProviderV4 ,
   embeddedWallet,
 } from "@thirdweb-dev/react";
+import { ThirdwebProvider } from "thirdweb/react"; // v5
 import { RootstockTestnet } from "@thirdweb-dev/chains";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Footer from "@/components/footer/Footer";
@@ -23,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ThirdwebProvider
+    <ThirdwebProviderV4
       activeChain={RootstockTestnet}
       supportedWallets={[
         metamaskWallet(),
@@ -33,6 +32,7 @@ export default function RootLayout({
       ]}
       clientId={clientId}
     >
+      <ThirdwebProvider>
       <html lang="en">
         <body className="h-screen">
           <main className="flex relative h-full w-full flex-col items-center">
@@ -52,6 +52,7 @@ export default function RootLayout({
           </main>
         </body>
       </html>
-    </ThirdwebProvider>
+      </ThirdwebProvider>
+    </ThirdwebProviderV4>
   );
 }
